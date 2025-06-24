@@ -21,9 +21,8 @@ if [ ! -d "/var/lib/mysql/${MARIADB_DATABASE}" ]; then
 		exit 1
 	fi
 
-    # Configuration database
-    # Create User
-    cat << EOF > $tmpfile
+	# Configuration database
+	cat << EOF > $tmpfile
 	USE mysql;
 	FLUSH PRIVILEGES;
 	GRANT ALL ON *.* TO 'root'@'%' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}' WITH GRANT OPTION;
@@ -36,9 +35,9 @@ if [ ! -d "/var/lib/mysql/${MARIADB_DATABASE}" ]; then
 	
 	/usr/sbin/mysqld --user=mysql --bootstrap < $tmpfile
 	rm -f $tmpfile
-	# echo "[i] MariaDB setup complete."
+	echo "[i] MariaDB setup complete."
 fi
 
-# echo "[i] Starting MariaDB server..."
 # run database
+echo "[i] Starting MariaDB server..."
 exec /usr/sbin/mysqld --user=mysql --console --skip-networking=0 --bind-address=0.0.0.0

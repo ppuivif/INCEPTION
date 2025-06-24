@@ -1,69 +1,69 @@
 services:
-	nginx:
-		container_name: nginx
-		build: ./requirements/nginx
-		depends_on:
-			- wordpress
-		env_file:
-			- .env
-		ports:
-			- "443:443"
-		volumes:
-			- wordpress:/var/www/html
-		networks:
-			- inception
-		restart: always
+  nginx:
+    container_name: nginx
+    build: ./requirements/nginx
+    depends_on:
+      - wordpress
+    env_file:
+      - .env
+    ports:
+      - "443:443"
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - inception
+    restart: always
 
-	mariadb:
-		container_name: mariadb
-		build: ./requirements/mariadb
-		env_file:
-			- .env
-		volumes:
-			- database:/var/www/mysql
-		networks:
-			- inception
-		expose:
-			- "3306"
-		restart: always
+  mariadb:
+    container_name: mariadb
+    build: ./requirements/mariadb
+    env_file:
+      - .env
+    volumes:
+      - database:/var/www/mysql
+    networks:
+      - inception
+    expose:
+      - "3306"
+    restart: always
 
-	wordpress:
-		container: wordpress
-		build: requirements/wordpress
-		depends_on:
-			- mariadb
-		env_file:
-			- .env
-		volumes:
-			- wordpress:/var/www/html
-		networks:
-			- inception
-		expose:
-			- "9000"
-		restart: always
-		environment:
-			WORDPRESS_DB_HOST: mariadb
-			WORDPRESS_DB_NAME: ${MARIADB_DATABASE}
-			WORDPRESS_DB_USER: ${MARIADB_USER}
-			WORDPRESS_DB_PASSWORD: ${MARIADB_PASSWORD}
+  wordpress:
+    container: wordpress
+    build: requirements/wordpress
+    depends_on:
+      - mariadb
+    env_file:
+      - .env
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - inception
+    expose:
+      - "9000"
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_NAME: ${MARIADB_DATABASE}
+      WORDPRESS_DB_USER: ${MARIADB_USER}
+      WORDPRESS_DB_PASSWORD: ${MARIADB_PASSWORD}
 
 networks:
-	inception:
-		driver: bridge
+  inception:
+    driver: bridge
 
 volumes:
-	database:
-		name: mariadb
-		driver: local
-		driver_opts:
-			type: none
-			o: bind
-			device: /home/ppuivif/data/mariadb
+  database:
+    name: mariadb
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/ppuivif/data/mariadb
 
-	wordpress:
-		name: wordpress
-		driver: local
-		driver_opts:
-			type: none
-			o: bind
-			device: /home/ppuivif/data/wordpress
+  wordpress:
+    name: wordpress
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/ppuivif/data/wordpress

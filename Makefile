@@ -17,7 +17,7 @@ down:
 
 clean:
 	@docker compose -f ./srcs/docker-compose.yml down --remove-orphans
-	@rm -rf /home/$(LOGIN)/data
+#	@rm -rf /home/$(LOGIN)/data
 
 fclean: clean
 	@docker compose -f ./srcs/docker-compose.yml down -v

@@ -1,4 +1,19 @@
 services:
+  nginx:
+    container_name: nginx
+    build: ./requirements/nginx
+    depends_on:
+      - wordpress
+    env_file:
+      - .env
+    ports:
+      - "443:443"
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - inception
+    restart: always
+
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb
@@ -11,6 +26,26 @@ services:
     expose:
       - "3306"
     restart: always
+
+  wordpress:
+    container: wordpress
+    build: requirements/wordpress
+    depends_on:
+      - mariadb
+    env_file:
+      - .env
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - inception
+    expose:
+      - "9000"
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_NAME: ${MARIADB_DATABASE}
+      WORDPRESS_DB_USER: ${MARIADB_USER}
+      WORDPRESS_DB_PASSWORD: ${MARIADB_PASSWORD}
 
 networks:
   inception:

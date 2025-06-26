@@ -1,15 +1,18 @@
 #!/bin/sh
 
+# does mysqld directory exist ?
 if [ ! -d "/run/mysqld" ]; then
 	mkdir -p /run/mysqld
 fi
 
 chmod 755 /run/mysqld
 
+# change property of mysqld directory 
 if ! chown -R mysql:mysql /run/mysqld; then
 	echo "[!] Failed to change ownership of /run/mysqld — check permissions or user context" >&2
 fi
 
+# does directory exist (and so database) ?
 if [ ! -d "/var/lib/mysql/${MARIADB_DATABASE}" ]; then
 	if ! chown -R mysql:mysql /var/lib/mysql; then
 		echo "[!] Failed to set ownership for MariaDB data directory" >&2
@@ -21,7 +24,7 @@ if [ ! -d "/var/lib/mysql/${MARIADB_DATABASE}" ]; then
 		exit 1
 	fi
 
-	# Configuration database
+	# database configuration with SQL commands
 	cat << EOF > $tmpfile
 USE mysql;
 FLUSH PRIVILEGES;
@@ -33,6 +36,7 @@ GRANT ALL PRIVILEGES ON ${MARIADB_DATABASE}.* TO '${MARIADB_USER}'@'%';
 FLUSH PRIVILEGES;
 EOF
 	
+	# database initialisation with tmp file in bootstrap mode 
 	/usr/sbin/mysqld --user=mysql --bootstrap < $tmpfile
 	rm -f $tmpfile
 	echo "[i] MariaDB setup complete."

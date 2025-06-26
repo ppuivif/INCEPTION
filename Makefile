@@ -25,7 +25,7 @@ fclean: clean
 
 prune:
 	@echo "$(_RED)WARNING : Global cleanup of the Docker system (including removal of orphan volumes)...$(_RESET)"
-	@docker system prune -af -v
+	@docker system prune -af --volumes
 
 re: fclean all
 

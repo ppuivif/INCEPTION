@@ -41,7 +41,7 @@ wp core install \
     --allow-root
 
 #echo "Creating additional WordPress user..."
-wp user create ${WORDPRESS_USER} ${WORDPRESS_EMAIL} --role=author --user_pass=${WORDPRESS_PASSWORD} --allow-root
+wp user create ${WORDPRESS_USER} ${WORDPRESS_USER_MAIL} --role=author --user_pass=${WORDPRESS_PASSWORD} --allow-root
 
 chmod -R 775 wp-content
 

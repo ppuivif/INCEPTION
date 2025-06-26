@@ -1,19 +1,4 @@
 services:
-  nginx:
-    container_name: nginx
-    build: ./requirements/nginx
-    depends_on:
-      - wordpress
-    env_file:
-      - .env
-    ports:
-      - "443:443"
-    volumes:
-      - wordpress:/var/www/html
-    networks:
-      - inception
-    restart: always
-
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb
@@ -28,8 +13,8 @@ services:
     restart: always
 
   wordpress:
-    container: wordpress
-    build: requirements/wordpress
+    container_name: wordpress
+    build: ./requirements/wordpress
     depends_on:
       - mariadb
     env_file:
@@ -46,6 +31,21 @@ services:
       WORDPRESS_DB_NAME: ${MARIADB_DATABASE}
       WORDPRESS_DB_USER: ${MARIADB_USER}
       WORDPRESS_DB_PASSWORD: ${MARIADB_PASSWORD}
+
+  nginx:
+    container_name: nginx
+    build: ./requirements/nginx
+    depends_on:
+      - wordpress
+    env_file:
+      - .env
+    ports:
+      - "443:443"
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - inception
+    restart: always
 
 networks:
   inception:

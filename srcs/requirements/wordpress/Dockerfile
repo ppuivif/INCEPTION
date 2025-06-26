@@ -12,7 +12,7 @@ RUN apt-get update && \
 	chmod +x /usr/local/bin/wp && \
 	apt-get purge -y curl && \
 	apt-get autoremove -y && \
-	m -rf /var/lib/apt/lists/*
+	rm -rf /var/lib/apt/lists/*
 
 COPY conf/wp.conf /etc/php/7.4/fpm/pool.d/wp.conf
 COPY tools/wp.sh /usr/local/bin/wp.sh

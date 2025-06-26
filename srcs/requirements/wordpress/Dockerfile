@@ -14,7 +14,7 @@ RUN apt-get update && \
 	apt-get autoremove -y && \
 	m -rf /var/lib/apt/lists/*
 
-COPY conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
+COPY conf/wp.conf /etc/php/7.4/fpm/pool.d/wp.conf
 COPY tools/wp.sh /usr/local/bin/wp.sh
 
 RUN chmod +x /usr/local/bin/wp.sh
